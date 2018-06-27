@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    tools {
+        maven "maven_354"
+        jdk "java_8"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -10,9 +15,19 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+        }
+       stage('Result') {
+            steps {
+                    junit '**/target/surefire-reports/**/*.xml'
+                }
+        }
+
+        stage('Sonar'){
+                steps{
+                     withSonarQubeEnv('sonarqube') {
+                  sh "mvn package sonar:sonar"
+            
+                    }
                 }
             }
         }
