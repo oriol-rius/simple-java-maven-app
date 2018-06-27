@@ -25,7 +25,7 @@ pipeline {
         stage('Sonar'){
                 steps{
                      withSonarQubeEnv('sonarqube') {
-                  sh "mvn package sonar:sonar"
+                  sh "mvn package sonar:sonar -Dsonar.projectKey=com.orrius.example -Dsonar.projectName=com.orrius.example -Dsonar.projectVersion=${BUILD_NUMBER} -Dsonar.language=java -Dsonar.sources=src/ -Dsonar.sourcesEnconding=UTF-8 -Dsonar.java.binaries=target/classes -Dsonar.exclusions=src/test/**'"
             
                     }
                 }
